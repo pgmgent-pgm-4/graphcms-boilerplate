@@ -2,9 +2,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
-
+ 
 import globalRouter from './routes';
-import passportConfig from './config/passport';
 
 // Read .env settings
 dotenv.config();
@@ -25,8 +24,8 @@ https://www.npmjs.com/package/body-parser
 */
 
 // Parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({
-  extended: false,
+app.use(bodyParser.urlencoded({ 
+  extended: false 
 }));
 // Parse application/json
 app.use(bodyParser.json());
@@ -38,16 +37,55 @@ cors is a node.js package for providing a Connect/Express middleware that can be
 https://www.npmjs.com/package/cors
 */
 const corsOptions = {
-};
+}
 app.use(cors(corsOptions));
 
 /*
-*/
-passportConfig(app);
+Add all routers to Express app
 
-/*
+All routes (paths) are registered
 */
 app.use('/', globalRouter);
+
+/*
+Not Found routes
+*/
+app.get('*', (req, res, next) => {
+  const err = new Error(
+    `${req.ip} tried to access ${req.originalUrl}`,
+  );
+  err.statusCode = 301;
+  next(err);
+});
+
+/*
+Error Handler
+*/
+app.use((err, req, res, next) => {
+  const error = err;
+  error.statusCode = error.statusCode || 500;
+  res.status(error.statusCode);
+
+  const body = {
+    url: req.url,
+    error: {
+      message: error.message,
+      statusCode: error.statusCode,
+    },
+  };
+
+  console.log(req.accepts('html'));
+
+  if (req.accepts('html')) {
+    res.render('error', body);
+  } else if (req.accepts('json')) {
+    res.json(body);
+  } else {
+    res.send('You have to accept application/json or text/html!');
+  }
+  next();
+});
+
 
 // Set the port used by the server
 const PORT = process.env.PORT || 8080;
