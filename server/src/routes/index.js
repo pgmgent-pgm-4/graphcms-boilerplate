@@ -9,7 +9,7 @@ Initialize a new router
 const globalRouter = Router();
 
 globalRouter.get('/', (req, res) => {
-    res.status(200).send('MERN Azure running - Server');
+  res.status(200).send('MERN Azure running - Server');
 });
 
 /*

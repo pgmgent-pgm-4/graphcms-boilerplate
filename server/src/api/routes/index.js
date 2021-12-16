@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+import authController from '../controllers/auth.controller';
+
 /*
 Express Router
 
@@ -11,8 +13,10 @@ const apiRouter = Router();
 Routes
 */
 apiRouter.get('/', (req, res) => {
-    res.status(200).send('API Home Route');
+  res.status(200).send('API Home Route');
 });
+
+apiRouter.get('/login', authController.login);
 
 // Returns the API router
 export default apiRouter;

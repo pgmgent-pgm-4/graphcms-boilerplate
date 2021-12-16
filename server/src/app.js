@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 
 import globalRouter from './routes';
+import passportConfig from './config/passport';
 
 // Read .env settings
 dotenv.config();
@@ -24,8 +25,8 @@ https://www.npmjs.com/package/body-parser
 */
 
 // Parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ 
-  extended: false 
+app.use(bodyParser.urlencoded({
+  extended: false,
 }));
 // Parse application/json
 app.use(bodyParser.json());
@@ -37,8 +38,12 @@ cors is a node.js package for providing a Connect/Express middleware that can be
 https://www.npmjs.com/package/cors
 */
 const corsOptions = {
-}
+};
 app.use(cors(corsOptions));
+
+/*
+*/
+passportConfig(app);
 
 /*
 */

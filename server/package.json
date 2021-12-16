@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/app.js",
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -11,11 +11,15 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "node-fetch": "^3.1.0",
+    "node-fetch": "^2.6.1",
     "passport": "^0.5.0",
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.5",
+    "@babel/node": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
     "cross-env": "^7.0.3",
     "eslint": "^8.4.1",
     "eslint-config-airbnb": "^19.0.2",
@@ -24,7 +28,7 @@
     "supertest": "^6.1.6"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development HOSTNAME=localhost PORT=8080 nodemon -e js,html,nj src/app.js --watch src/*",
+    "dev": "cross-env NODE_ENV=development HOSTNAME=localhost PORT=8080 nodemon --exec babel-node src/app.js --watch src/*",
     "lint": "cross-env NODE_ENV=lint eslint . --ext .js --fix",
     "test": "cross-env NODE_ENV=test HOSTNAME=localhost PORT=8081 jest --detectOpenHandles --maxWorkers=1 --forceExit"
   }
