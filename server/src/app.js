@@ -2,11 +2,13 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
- 
-import globalRouter from './routes';
+import path from 'path';
+import nunjucks from 'nunjucks';
 
-// Read .env settings
-dotenv.config();
+import settings from './config/settings';
+import passportConfig from './config/passport';
+import globalRouter from './routes';
+import { HTTPError } from './utils';
 
 /*
 Fast, unopinionated, minimalist web framework for node.
@@ -17,6 +19,17 @@ Initalize the express application
 const app = express();
 
 /*
+View Engine
+*/
+nunjucks.configure(path.join(__dirname, 'views'), {
+  autoescape: true,
+  express: app,
+  noCache: true,
+  watch: true,
+});
+app.set('view engine', 'html');
+
+/*
 Node.js body parsing middleware
 
 Parse incoming request bodies in a middleware before your handlers, available under the req.body property.
@@ -24,11 +37,21 @@ https://www.npmjs.com/package/body-parser
 */
 
 // Parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ 
-  extended: false 
+app.use(bodyParser.urlencoded({
+  extended: false,
 }));
 // Parse application/json
 app.use(bodyParser.json());
+
+/*
+Serving static files
+*/
+app.use('/static', express.static(path.join(__dirname, 'public')));
+
+/*
+Passport configuration
+*/
+passportConfig(app);
 
 /*
 Cors parsing middleware
@@ -37,7 +60,7 @@ cors is a node.js package for providing a Connect/Express middleware that can be
 https://www.npmjs.com/package/cors
 */
 const corsOptions = {
-}
+};
 app.use(cors(corsOptions));
 
 /*
@@ -51,10 +74,8 @@ app.use('/', globalRouter);
 Not Found routes
 */
 app.get('*', (req, res, next) => {
-  const err = new Error(
-    `${req.ip} tried to access ${req.originalUrl}`,
-  );
-  err.statusCode = 301;
+  const ip = req.headers['x-real-ip'] || req.connection.remoteAddress;
+  const err = new HTTPError(`${ip} tried to access ${req.originalUrl}`, 301);
   next(err);
 });
 
@@ -74,8 +95,6 @@ app.use((err, req, res, next) => {
     },
   };
 
-  console.log(req.accepts('html'));
-
   if (req.accepts('html')) {
     res.render('error', body);
   } else if (req.accepts('json')) {
@@ -86,14 +105,7 @@ app.use((err, req, res, next) => {
   next();
 });
 
-
-// Set the port used by the server
-const PORT = process.env.PORT || 8080;
-
-// Set the Node environment
-const NODE_ENV = process.env.NODE_ENV || 'development';
-
 // Express js listen method to run project on http://localhost:3000
-app.listen(PORT, () => {
-  console.log(`Application is running in ${NODE_ENV} mode on port ${PORT}`);
+app.listen(settings.PORT, () => {
+  console.log(`Application is running in ${settings.NODE_ENV} mode on port ${settings.PORT}`);
 });

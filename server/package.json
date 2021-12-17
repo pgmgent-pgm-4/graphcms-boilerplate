@@ -13,7 +13,9 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "node-fetch": "^2.6.1",
+    "nunjucks": "^3.2.3",
     "passport": "^0.5.0",
+    "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
@@ -29,8 +31,8 @@
     "supertest": "^6.1.6"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development HOSTNAME=localhost PORT=8080 nodemon --exec babel-node src/app.js --watch src/*",
+    "dev": "cross-env NODE_ENV=development HOST=localhost PORT=8080 nodemon --exec babel-node src/app.js --watch src/*",
     "lint": "cross-env NODE_ENV=lint eslint . --ext .js --fix",
-    "test": "cross-env NODE_ENV=test HOSTNAME=localhost PORT=8081 jest --detectOpenHandles --maxWorkers=1 --forceExit"
+    "test": "cross-env NODE_ENV=test HOST=localhost PORT=8081 jest --detectOpenHandles --maxWorkers=1 --forceExit"
   }
 }

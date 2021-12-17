@@ -1,6 +1,8 @@
 import { Router } from 'express';
+import passport from 'passport';
 
 import authController from '../controllers/auth.controller';
+import userRouter from './user.routes';
 
 /*
 Express Router
@@ -17,6 +19,7 @@ apiRouter.get('/', (req, res) => {
 });
 
 apiRouter.get('/login', authController.login);
+apiRouter.get('/user', passport.authenticate('jwt', { session: false }), userRouter);
 
 // Returns the API router
 export default apiRouter;

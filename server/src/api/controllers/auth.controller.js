@@ -1,6 +1,7 @@
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 
+import settings from '../../config/settings';
 import { handleHTTPError, HTTPError } from '../../utils';
 
 const login = (req, res, next) => {
@@ -8,22 +9,22 @@ const login = (req, res, next) => {
     try {
       if (err || !user) {
         throw new HTTPError(info, 401);
-      }     
+      }
 
       const userPayload = {
         id: user.id,
         username: user.username,
         email: user.email,
-      }
+      };
 
-      const token = jwt.sign(userPayload, 'SECRET', {
-        expiresIn: '24h',
+      const token = jwt.sign({ user: userPayload }, settings.JWT_SECRET, {
+        expiresIn: settings.JWT_EXPIRE,
       });
 
       const authenticated = {
         ...userPayload,
-        token: token,
-      }; 
+        token,
+      };
 
       return res.status(200).json(authenticated);
     } catch (error) {
