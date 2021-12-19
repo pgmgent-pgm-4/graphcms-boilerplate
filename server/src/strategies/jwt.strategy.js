@@ -7,11 +7,10 @@ const jwtStrategy = () => {
   passport.use(new Strategy(
     {
       secretOrKey: settings.JWT_SECRET,
-      jwtFromRequest: ExtractJwt.fromUrlQueryParameter('secret_token')
+      jwtFromRequest: ExtractJwt.fromExtractors([ExtractJwt.fromUrlQueryParameter("secret_token"), ExtractJwt.fromHeader("secret_token"), ExtractJwt.fromAuthHeaderAsBearerToken()]),
     },
     async (token, done) => {
       try {
-        console.log(token);
         if (!token) {
           throw new Error('Token does no exists');
         }

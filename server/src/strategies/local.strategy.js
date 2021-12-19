@@ -46,6 +46,7 @@ const localStrategy = () => {
 
         done(null, authUser);
       } catch (error) {
+        console.log(error);
         done(error);
       }
     },
