@@ -16,6 +16,8 @@ mutation CreateCategoryMutation($name: String!, $description: String!) {
 let parser = new Parser();
 
 (async () => {
+  let categories, uniqueCategories;
+
   /*
    * Create a Category (Local Provider)
   */
@@ -38,11 +40,10 @@ let parser = new Parser();
   */
   const createCategories = async () => {
     const feed = await parser.parseURL('https://tweakers.net/feeds/mixed.xml');
-    let categories = [...new Set(feed.items.flatMap(post => post.categories))];
-    categories = [...new Set(categories.flatMap(category => category.split(' / ')))];
-
+    categories = [...new Set(feed.items.flatMap(post => post.categories))];
+    uniqueCategories = [...new Set(categories.flatMap(category => category.split(' / ')))];
     const promises = [];
-    categories.forEach((category) => {
+    uniqueCategories.forEach((category) => {      
       promises.push(createCategory(category, faker.lorem.sentence()));
     });
 
@@ -55,3 +56,11 @@ let parser = new Parser();
   await createCategories();
 
 })();
+
+// const categoryPath = categories.find((c) => c.indexOf(category) !== -1);
+//       const categoryPathElements = categoryPath.split(' / ');
+//       const parentCategory = null;
+//       const categoryPathIndex = categoryPathElements.findIndex(c => c === category);
+//       if (categoryPathIndex > 0) {
+        
+//       }
