@@ -2,16 +2,28 @@
   "name": "seeder",
   "version": "1.0.0",
   "description": "",
-  "main": "createAuthUsers.js",
+  "main": "src/users-create.seeder.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "seeder:categories": "babel-node src/categories-create.seeder.js --debug",
+    "seeder:posts": "babel-node src/posts-create.seeder.js --debug",
+    "seeder:users": "babel-node src/users-create.seeder.js --debug",
+    "delete:categories": "babel-node src/collection-delete.seeder.js Category Categories --debug",
+    "delete:users": "babel-node src/collection-delete.seeder.js AuthUser AuthUsers --debug"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "awesome-graphql-client": "^0.11.0",
     "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
     "faker": "^5.5.3",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "rss-parser": "^3.12.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.5",
+    "@babel/node": "^7.16.5",
+    "@babel/preset-env": "^7.16.5"
   }
 }

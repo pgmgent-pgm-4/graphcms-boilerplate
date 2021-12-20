@@ -1,4 +1,5 @@
 import faker from 'faker';
+import Parser from 'rss-parser';
 import client from './graphql_client';
 import { generateValueBetweenMinAndMax, generateTimestamps } from './utils';
 
@@ -12,11 +13,13 @@ mutation CreateAuthUserMutation($username: String!, $email: String!, $password: 
   }
 }`;
 
+let parser = new Parser();
+
 (async () => {
   /*
-   * Create a User (Local Provider)
+   * Create a Post (Local Provider)
   */
-  const createUser = async (username, email, password) => {
+  const createUser = async ({}) => {
     try {
       const { createAuthUser } = await client.request(mutationCreateAuthUser, { username, email, password });
 
@@ -31,22 +34,25 @@ mutation CreateAuthUserMutation($username: String!, $email: String!, $password: 
   };
 
   /*
-   * Create a Users via promises
+   * Create posts via promises
   */
-  const createUsers = async (n = 20) => {
+  const createPosts = async (n = 20) => {
     const promises = [];
     for (let i=0; i < n;i++) {
-      const gender = generateValueBetweenMinAndMax(0, 1);
-      const firstName = faker.name.firstName(gender);
-      const lastName = faker.name.lastName(gender);
-      promises.push(await createUser(faker.internet.userName(firstName, lastName), faker.internet.email(firstName, lastName), 'w84pgmGent'));
+      // const gender = generateValueBetweenMinAndMax(0, 1);
+      // const firstName = faker.name.firstName(gender);
+      // const lastName = faker.name.lastName(gender);
+      // promises.push(await createUser(faker.internet.userName(firstName, lastName), faker.internet.email(firstName, lastName), 'w84pgmGent'));
+      
+      const feed = await parser.parseURL('https://tweakers.net/feeds/mixed.xml');
+      console.log(feed);
     }
     return await Promise.all(promises);
   };
 
   /*
-   * Create Models in Auth
+   * Create posts
   */
-  await createUsers(16);
+  await createPosts(16);
 
 })();
