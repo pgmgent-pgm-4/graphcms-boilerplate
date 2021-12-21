@@ -1,4 +1,5 @@
 import faker from 'faker';
+import fetch from 'node-fetch';
 import client from './graphql_client';
 
 const mutationCreateTag = `
@@ -31,11 +32,14 @@ mutation CreateTagMutation($name: String!) {
   /*
    * Create tags via promises
   */
-  const createTags = async (n = 100) => {
+  const createTags = async () => {
+    const response = await fetch('https://www.gdm.gent/static/data/cases.json');
+    const cases = await response.json();
+    const tags = [...new Set(cases.flatMap(project => project.Tags))];
     const promises = [];
-    for (let i=0; i < n;i++) {
-      promises.push(await createTag(faker.lorem.word()));
-    }
+    tags.forEach(async (tag) => {
+      promises.push(await createTag(tag));
+    });
     return await Promise.all(promises);
   };
 
