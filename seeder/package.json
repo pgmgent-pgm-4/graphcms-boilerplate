@@ -9,8 +9,10 @@
     "seeder:tags": "babel-node src/tags-create.seeder.js --debug",
     "seeder:users": "babel-node src/users-create.seeder.js --debug",
     "delete:categories": "babel-node src/collection-delete.seeder.js Category Categories --debug",
-    "delete:tags": "babel-node src/collection-delete.seeder.js Tag Tags --debug",
-    "delete:users": "babel-node src/collection-delete.seeder.js AuthUser AuthUsers --debug"
+    "delete:profiles": "babel-node src/collection-delete.seeder.js Profile Profiles --debug",
+    "delete:tags": "babel-node src/collection-delete.seeder.js Tag Tags --debug",    
+    "delete:users": "babel-node src/collection-delete.seeder.js AuthUser AuthUsers --debug",
+    "delete:users-full": "npm run delete:users && npm run delete:profiles"
   },
   "author": "",
   "license": "ISC",

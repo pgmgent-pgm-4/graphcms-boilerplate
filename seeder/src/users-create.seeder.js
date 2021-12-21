@@ -3,9 +3,9 @@ import client from './graphql_client';
 import { generateValueBetweenMinAndMax, generateTimestamps } from './utils';
 
 const mutationCreateAuthUser = `
-mutation CreateAuthUserMutation($username: String!, $email: String!, $password: String!, $profileId: Integer!) {
+mutation CreateAuthUserMutation($username: String!, $email: String!, $password: String!, $profileId: ID!) {
   __typename
-  createAuthUser(data: {username: $username, email: $email, password: $password}, profile: {connect: {id: $profileId}}) {
+  createAuthUser(data: {username: $username, email: $email, password: $password, profile: {connect: {id: $profileId}}}) {
     id,
     username,
     email
