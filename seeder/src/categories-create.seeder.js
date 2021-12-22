@@ -40,6 +40,7 @@ let parser = new Parser();
   */
   const createCategories = async () => {
     const feed = await parser.parseURL('https://tweakers.net/feeds/mixed.xml');
+    console.log(feed.items);
     categories = [...new Set(feed.items.flatMap(post => post.categories))];
     uniqueCategories = [...new Set(categories.flatMap(category => category.split(' / ')))];
     const promises = [];
