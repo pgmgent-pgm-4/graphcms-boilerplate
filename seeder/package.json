@@ -6,6 +6,7 @@
   "scripts": {
     "seeder:categories": "babel-node src/categories-create.seeder.js --debug",
     "seeder:posts": "babel-node src/posts-create.seeder.js --debug",
+    "seeder:projects": "babel-node src/projects-create.seeder.js --debug",
     "seeder:tags": "babel-node src/tags-create.seeder.js --debug",
     "seeder:users": "babel-node src/users-create.seeder.js --debug",
     "delete:categories": "babel-node src/collection-delete.seeder.js Category Categories --debug",

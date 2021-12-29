@@ -1,13 +1,73 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './app';
 import reportWebVitals from './reportWebVitals';
 
+// Apollo client imports
+import {
+  ApolloClient,
+  ApolloLink,
+  ApolloProvider,
+  concat,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client";
+
+// React Router v6 imports
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom";
+
+// Custom compoments
+import { settings } from './app/config';
+import App from './app';
+
+// Custom styles
+import './index.css';
+import { HomePage, PostDetailsPage, PostsPage } from './app/pages';
+
+// HTTP link to the GraphQL resource
+const httpLink = new HttpLink({
+  uri: settings.GRAPHCMS_CONTENT_API,
+});
+
+const authMiddleware = new ApolloLink((operation, forward) => {
+  operation.setContext(({ headers = {} }) => ({
+    headers: {
+      ...headers,
+      authorization: `Bearer ${settings.GRAPHCMS_ACCESS_TOKEN}`,
+    }
+  }));
+  return forward(operation);
+});
+
+// Create an Apollo GraphQL client
+const client = new ApolloClient({
+  link: concat(authMiddleware, httpLink),
+  cache: new InMemoryCache(),
+});
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <ApolloProvider client={client}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route index element={<HomePage />} />
+          <Route path="posts" element={<PostsPage />} />  
+          <Route path="posts/:postId" element={<PostDetailsPage />} />
+          <Route
+              path="*"
+              element={
+                <main style={{ padding: "1rem" }}>
+                  <p>There's nothing here!</p>
+                </main>
+              }
+            />
+        </Route>
+      </Routes>
+    </BrowserRouter>    
+  </ApolloProvider>,
   document.getElementById('root')
 );
 
