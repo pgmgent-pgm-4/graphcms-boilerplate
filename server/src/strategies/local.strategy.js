@@ -4,6 +4,7 @@ import { AwesomeGraphQLClient } from 'awesome-graphql-client';
 import fetch from 'node-fetch';
 
 import settings from '../config/settings';
+import { HTTPError } from '../utils';
 
 const localStrategy = () => {
   const queryGetUserByUsername = `
@@ -37,16 +38,15 @@ const localStrategy = () => {
         const { authUser } = await client.request(queryGetUserByUsername, { username });
 
         if (!authUser) {
-          throw new Error('User does no exists');
+          throw new HTTPError('User does no exists', 404);
         }
 
         if (password !== authUser.password) {
-          throw new Error('Incorrect Credentials');
+          throw new HTTPError('Incorrect Credentials', 404);
         }
 
         done(null, authUser);
       } catch (error) {
-        console.log(error);
         done(error);
       }
     },

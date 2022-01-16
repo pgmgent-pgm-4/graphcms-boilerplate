@@ -26,6 +26,8 @@ import App from './app';
 // Custom styles
 import './index.css';
 import { HomePage, PostDetailsPage, PostsPage } from './app/pages';
+import { AuthProvider } from './app/context';
+import { AdminOutlet, UserOutlet } from './app/utils';
 
 // HTTP link to the GraphQL resource
 const httpLink = new HttpLink({
@@ -50,23 +52,33 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route index element={<HomePage />} />
-          <Route path="posts" element={<PostsPage />} />  
-          <Route path="posts/:postId" element={<PostDetailsPage />} />
-          <Route
-              path="*"
-              element={
-                <main style={{ padding: "1rem" }}>
-                  <p>There's nothing here!</p>
-                </main>
-              }
-            />
-        </Route>
-      </Routes>
-    </BrowserRouter>    
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route index element={<HomePage />} />
+            <Route path="posts" element={<PostsPage />} />  
+            <Route path="posts/:postId" element={<PostDetailsPage />} />
+            <Route path="user" element={<UserOutlet />}>
+              <Route index element ={<HomePage/>} />
+              <Route path="profile" element ={<PostsPage/>} />
+            </Route>
+            <Route path="admin" element={<AdminOutlet />}>
+              <Route index element ={<HomePage/>} />
+              <Route path="posts" element ={<PostsPage/>} />
+            </Route>
+            <Route
+                path="*"
+                element={
+                  <main style={{ padding: "1rem" }}>
+                    <p>There's nothing here!</p>
+                  </main>
+                }
+              />
+          </Route>
+        </Routes>
+      </BrowserRouter>   
+    </AuthProvider> 
   </ApolloProvider>,
   document.getElementById('root')
 );

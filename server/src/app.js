@@ -5,6 +5,7 @@ import nunjucks from 'nunjucks';
 import dotenv from 'dotenv';
 import cors from 'cors';
  
+import passportConfig from './config/passport';
 import globalRouter from './routes';
 
 // Read .env settings
@@ -39,6 +40,11 @@ nunjucks.configure('views', {
 app.set('view engine', 'html');
 // Serve static content
 app.use(express.static(path.join(process.cwd(), '..', 'client', 'build')));
+
+/*
+Passport
+*/
+passportConfig(app);
 
 /*
 Cors parsing middleware
@@ -83,8 +89,6 @@ app.use((err, req, res, next) => {
       statusCode: error.statusCode,
     },
   };
-
-  console.log(error);
 
   if (req.accepts('html')) {  
     res.render('error', body);

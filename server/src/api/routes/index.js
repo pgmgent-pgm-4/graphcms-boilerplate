@@ -18,7 +18,7 @@ apiRouter.get('/', (req, res) => {
   res.status(200).send('API Home Route');
 });
 
-apiRouter.get('/login', authController.login);
+apiRouter.post('/login', authController.login);
 apiRouter.use('/user', passport.authenticate('jwt', { session: false }), userRouter);
 
 // Returns the API router

@@ -8,7 +8,7 @@ const login = (req, res, next) => {
   passport.authenticate('login', async (err, user, info) => {
     try {
       if (err || !user) {
-        throw new HTTPError(info.message, 401);
+        throw err;
       }
 
       const userPayload = {
@@ -28,6 +28,7 @@ const login = (req, res, next) => {
 
       return res.status(200).json(authenticated);
     } catch (error) {
+      console.log(error);
       return handleHTTPError(error, next);
     }
   })(req, res, next);
