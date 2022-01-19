@@ -14,7 +14,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const NavigationComponent = () => {
+const Navigation = () => {
   return (
     <Disclosure.Panel className="sm:hidden">
       <div className="px-2 pt-2 pb-3 space-y-1">
@@ -37,4 +37,4 @@ const NavigationComponent = () => {
   );
 };
 
-export default NavigationComponent;
+export default Navigation;

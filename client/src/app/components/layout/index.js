@@ -1,5 +1,5 @@
-import HeaderComponent from "./header.component";
+import Header from "./header.component";
 
-export (
-  HeaderComponent,
-)
+export {
+  Header,
+};

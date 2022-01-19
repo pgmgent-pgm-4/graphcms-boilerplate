@@ -1,9 +1,9 @@
 import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
-import NavigationComponent from './navigation.component';
+import Navigation from './navigation.component';
 
-const HeaderComponent = () => {
+const Header = () => {
   return (
     <header className="app-header">
       <div className="flex-shrink-0 flex items-center">
@@ -19,10 +19,10 @@ const HeaderComponent = () => {
                   />
                 </div>
       <Disclosure as="nav" className="bg-gray-800">
-        <NavigationComponent />
+        <Navigation />
       </Disclosure>
     </header>
   );
 };
 
-export default HeaderComponent;
+export default Header;
