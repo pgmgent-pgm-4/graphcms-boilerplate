@@ -1,4 +1,4 @@
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import client from './graphql_client';
 import { generateValueBetweenMinAndMax, generateTimestamps } from './utils';
 
@@ -58,6 +58,6 @@ mutation CreateProfileMutation($firstname: String!, $lastname: String!) {
   /*
    * Create Models in Auth
   */
-  await createUsers(16);
+  await createUsers(400);
 
 })();

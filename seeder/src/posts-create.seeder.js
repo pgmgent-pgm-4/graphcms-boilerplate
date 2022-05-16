@@ -1,16 +1,15 @@
-import faker from 'faker';
-import Parser from 'rss-parser';
+import faker from '@faker-js/faker';
 import { htmlToSlateAST } from '@graphcms/html-to-slate-ast';
+
 import client from './graphql_client';
 import { generateValueBetweenMinAndMax, generateTimestamps } from './utils';
 
 const mutationCreatePost = `
-mutation CreatePostMutation($title: String!, $description: String!, $body: RichTextAST, $categoryName: String, $tags: [TagWhereUniqueInput!]) {
+mutation CreatePostMutation($title: String!, $body: RichTextAST, $authUserId: ID!, $communities: [CommunityWhereUniqueInput!], $tags: [TagWhereUniqueInput!]) {
   __typename
-  createPost(data: {title: $title, description: $description, body: $body, category: {connect: {name: $categoryName}}, tags: {connect: $tags}}) {
+  createPost(data: {title: $title, body: $body, authUser: {connect: {id: $authUserId}}, communities: {connect: $communities}, tags: {connect: $tags}}) {
     id
     title
-    description
     body {
       markdown
     }
@@ -18,10 +17,32 @@ mutation CreatePostMutation($title: String!, $description: String!, $body: RichT
       name
       id
     }
-    category {
+    communities {
       id
       name
     }
+    authUser {
+      id
+      username
+      email
+    }
+  }
+}`;
+
+const queryGetAuthUsers = `
+query GetAuthUsers {
+  authUsers {
+    id
+    username
+    email
+  }
+}`;
+
+const queryGetCommunities = `
+query GetCommunities {
+  communities {
+    id
+    name
   }
 }`;
 
@@ -32,8 +53,6 @@ query GetTags {
     name
   }
 }`;
-
-let parser = new Parser();
 
 (async () => {
   /*
@@ -56,12 +75,20 @@ let parser = new Parser();
     return tagsToBeInsertedIntoPost;
   }
 
+  // Get all the users
+  let { authUsers } = await client.request(queryGetAuthUsers);
+  // Get all the communities
+  let { communities } = await client.request(queryGetCommunities);
+  // Get all the tags
+  let { tags } = await client.request(queryGetTags);
+  tags = [...tags.map(tag => { return { name: tag.name }})];
+
   /*
-   * Create a Post (Local Provider)
+   * Create a Article = Post (Local Provider)
   */
-  const createPost = async ({ title, description, body, categoryName, tags }) => {
+  const createArticle = async ({ title, body, authUserId, communities, tags }) => {
     try {
-      const { createPost } = await client.request(mutationCreatePost, { title, description, body, categoryName, tags});
+      const { createPost } = await client.request(mutationCreatePost, { title, body, authUserId, communities, tags });
 
       if (!createPost) {
         throw new Error(`Can't create the post with title ${createPost.title}!`);
@@ -76,23 +103,16 @@ let parser = new Parser();
   /*
    * Create posts via promises
   */
-  const createPosts = async () => {
+  const createPosts = async (n = 20) => {
     const promises = [];
 
-    // Get all the tags
-    let { tags } = await client.request(queryGetTags);
-    tags = [...tags.map(tag => { return { name: tag.name }})];
-
-    // Get posts from tweakers RSS feed
-    const feed = await parser.parseURL('https://tweakers.net/feeds/mixed.xml');
-    const posts = feed.items;
-    posts.forEach(async (post) => {
-      const categories = post.categories[0].split(' / ');
-      const categoryName = categories[categories.length - 1];
-      const ast = await htmlToSlateAST(getRandomBody(generateValueBetweenMinAndMax(1, 4)));      
+    for (let i=0; i < n;i++) {
+      const authUserId = authUsers[generateValueBetweenMinAndMax(0, authUsers.length - 1)].id;
+      const community = communities[generateValueBetweenMinAndMax(0, communities.length - 1)];
+      const ast = await htmlToSlateAST(getRandomBody(generateValueBetweenMinAndMax(1, 4))); 
       
-      promises.push(await createPost({title: post.title, description: post.content, body: { children: ast }, categoryName, tags: getTags(tags, generateValueBetweenMinAndMax(1, 6)) }));
-    });
+      promises.push(await createArticle({title: faker.lorem.sentence(generateValueBetweenMinAndMax(4, 10)), body: { children: ast }, authUserId: authUserId, communities: [community], tags: getTags(tags, generateValueBetweenMinAndMax(1, 6)) }));
+    };
     
     return await Promise.all(promises);
   };
@@ -100,6 +120,6 @@ let parser = new Parser();
   /*
    * Create posts
   */
-  await createPosts();
+  await createPosts(200);
 
 })();

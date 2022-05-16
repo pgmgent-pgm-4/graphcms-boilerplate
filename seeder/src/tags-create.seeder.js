@@ -1,4 +1,4 @@
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import fetch from 'node-fetch';
 import client from './graphql_client';
 
