@@ -24,7 +24,7 @@ const CommunitiesList = () => {
     return (
       <div className="communities-list">
         {data && data.communities && data.communities.map(community => 
-          <article>
+          <article key={ community.id }>
             <h2>{ community.name }</h2>
             <p>{ community.description }</p>
           </article>

@@ -1,13 +1,13 @@
 import { Outlet } from 'react-router-dom'; 
-import HeaderComponent from '../components/layout/header.component';
+import Header from './Header';
 
-const PublicOutlet = ({
+const PublicLayout = ({
   children,
   ...rest
 }) => {
   return (
     <>
-      <HeaderComponent />
+      <Header />
       <main>
         <Outlet/>
       </main>
@@ -15,4 +15,4 @@ const PublicOutlet = ({
   );
 };
 
-export default PublicOutlet;
+export default PublicLayout;

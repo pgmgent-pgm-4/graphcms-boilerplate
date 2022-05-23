@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 import { useAuth } from './context';
 
-import './App.css';
+import './App.scss';
 
 function App() {
   // const { currentUser, signInWithEmailAndPassword} = useAuth();  

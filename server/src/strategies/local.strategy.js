@@ -6,6 +6,9 @@ import fetch from 'node-fetch';
 import settings from '../config/settings';
 import { HTTPError } from '../utils';
 
+console.log('POLO');
+console.log(settings);
+
 const localStrategy = () => {
   const queryGetUserByUsername = `
     query getUserByUsername($username: String!) {
@@ -35,6 +38,9 @@ const localStrategy = () => {
     },
     async (username, password, done) => {
       try {
+        const data = await client.request(queryGetUserByUsername, { username });
+        console.log(data);
+        
         const { authUser } = await client.request(queryGetUserByUsername, { username });
 
         if (!authUser) {

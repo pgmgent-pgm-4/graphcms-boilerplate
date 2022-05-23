@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from 'react-router-dom'; 
+import { useAuth } from '../../context';
 
-import { useAuth } from '../context';
-import { AUTH_SIGN_IN } from '../routes';
+import { AUTH_SIGN_IN } from '../../routes';
 
-const UserOutlet = ({
+const AdminLayout = ({
   children,
   ...rest
 }) => {
@@ -16,4 +16,4 @@ const UserOutlet = ({
   );
 };
 
-export default UserOutlet;
+export default AdminLayout;

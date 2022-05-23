@@ -15,10 +15,7 @@ import App from './app';
 // Utilities
 import { CommunitiesPage, HomePage, PostDetailsPage, PostsPage } from './app/pages';
 import { AuthProvider, GraphCMSProvider } from './app/context';
-import { AdminOutlet, PublicOutlet, UserOutlet } from './app/utils';
-
-// Custom styles
-import './index.css';
+import { AdminLayout, PublicLayout, UserLayout } from './app/components/layout';
 
 ReactDOM.render(
   <GraphCMSProvider>
@@ -26,17 +23,17 @@ ReactDOM.render(
       <BrowserRouter>
         <Routes>
           <Route element={<App />}>
-            <Route path="/" element={<PublicOutlet />}>
+            <Route path="/" element={<PublicLayout />}>
               <Route index element={<HomePage />} />
               <Route path="posts" element={<PostsPage />} />  
               <Route path="posts/:postId" element={<PostDetailsPage />} />
               <Route path="communities" element={<CommunitiesPage />} /> 
             </Route>            
-            <Route path="user" element={<UserOutlet />}>
+            <Route path="user" element={<UserLayout />}>
               <Route index element ={<HomePage/>} />
               <Route path="profile" element ={<PostsPage/>} />
             </Route>
-            <Route path="admin" element={<AdminOutlet />}>
+            <Route path="admin" element={<AdminLayout />}>
               <Route index element ={<HomePage/>} />
               <Route path="posts" element ={<PostsPage/>} />
             </Route>
