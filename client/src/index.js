@@ -13,7 +13,7 @@ import {
 import App from './app';
 
 // Utilities
-import { HomePage, PostDetailsPage, PostsPage } from './app/pages';
+import { CommunitiesPage, HomePage, PostDetailsPage, PostsPage } from './app/pages';
 import { AuthProvider, GraphCMSProvider } from './app/context';
 import { AdminOutlet, PublicOutlet, UserOutlet } from './app/utils';
 
@@ -30,6 +30,7 @@ ReactDOM.render(
               <Route index element={<HomePage />} />
               <Route path="posts" element={<PostsPage />} />  
               <Route path="posts/:postId" element={<PostDetailsPage />} />
+              <Route path="communities" element={<CommunitiesPage />} /> 
             </Route>            
             <Route path="user" element={<UserOutlet />}>
               <Route index element ={<HomePage/>} />

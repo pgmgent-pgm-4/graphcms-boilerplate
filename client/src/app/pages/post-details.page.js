@@ -9,21 +9,18 @@ import { PostDetailsComponent } from '../components/posts';
 
 // GraphQL queries
 const POST = gql`
-query GetPost($id: ID!) {
+query GetPostById($id: ID!) {
   post(where: {id: $id}) {
-    id
     title
-    description
+    id
     body {
       html
     }
-    tags {
-      id
-      name
-    }
-    category {
-      id
-      name
+    createdAt
+    imageUrl
+    link
+    authUser {
+      username
     }
   }
 }
@@ -32,6 +29,8 @@ query GetPost($id: ID!) {
 const PostDetailsPage = () => {
   let params = useParams();
   let postId = (params.postId);
+
+  console.log(postId);
 
   const { loading, error, data } = useQuery(POST, { 
     variables: {
