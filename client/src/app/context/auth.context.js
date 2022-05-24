@@ -1,14 +1,16 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 
+import settings from '../config/settings'
+
 const AuthContext = createContext(null);
 const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({children}) => {
-  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('react-boilerplate-pgm-4:currentUser')));
+  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem(settings.AUTH_KEY_LOCALSTORAGE)));
 
   useEffect(() => {
-    localStorage.setItem('react-boilerplate-pgm-4:currentUser', JSON.stringify(currentUser));
+    localStorage.setItem(settings.AUTH_KEY_LOCALSTORAGE, JSON.stringify(currentUser));
   }, [currentUser]);
 
   const signInWithEmailAndPassword = async (email, password) => {
@@ -31,8 +33,8 @@ const AuthProvider = ({children}) => {
   };
 
   const signOut = async () => {
-    // setCurrentUser(null); 
-    // return await auth.signOut();
+    setCurrentUser(null); 
+    return await auth.signOut();
   };
 
   return (

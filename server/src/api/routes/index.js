@@ -19,6 +19,7 @@ apiRouter.get('/', (req, res) => {
 });
 
 apiRouter.post('/login', authController.login);
+apiRouter.post('/logout', authController.logout);
 apiRouter.use('/user', passport.authenticate('jwt', { session: false }), userRouter);
 
 // Returns the API router
