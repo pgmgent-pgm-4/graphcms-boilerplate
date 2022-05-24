@@ -28,7 +28,11 @@ $headings-font-family: 'Ubuntu', sans-serif;
 @import "~bootstrap/scss/containers";
 @import "~bootstrap/scss/grid";
 @import "~bootstrap/scss/helpers";
+@import "~bootstrap/scss/nav";
 @import "~bootstrap/scss/navbar";
+@import "~bootstrap/scss/card";
+@import "~bootstrap/scss/list-group";
+@import "~bootstrap/scss/spinners";
 
 // 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
 @import "~bootstrap/scss/utilities/api";

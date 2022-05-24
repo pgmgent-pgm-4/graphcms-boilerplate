@@ -2,6 +2,7 @@ import {
   gql,
   useQuery,
 } from "@apollo/client";
+import { Spinner } from 'reactstrap';
 
 // Custom components
 import { PostsListComponent } from '../components/posts';
@@ -20,7 +21,13 @@ const PostsPage = () => {
   const { loading, error, data } = useQuery(POSTS);
 
   const gqlResult = () => {
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <Spinner
+      color="primary"
+      size=""
+      type="grow"
+    >
+      Loading...
+    </Spinner>;
     if (error) return <p>Error :(</p>;
 
     return (

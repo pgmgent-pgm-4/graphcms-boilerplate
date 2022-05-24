@@ -1,5 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 
+import { ListGroup, ListGroupItem } from 'reactstrap';
+
 const GET_ALL_COMMUNITIES = gql`
 query GetAllCommunities {
   communities {
@@ -22,13 +24,18 @@ const CommunitiesList = () => {
     if (error) return <p>Error...</p>;
 
     return (
-      <div className="communities-list">
+      <div className="card communities-list">
+        <div className="card-header">
+          Communities
+        </div>
+        <ListGroup>
         {data && data.communities && data.communities.map(community => 
-          <article key={ community.id }>
+          <ListGroupItem key={ community.id }>
             <h2>{ community.name }</h2>
             <p>{ community.description }</p>
-          </article>
+          </ListGroupItem>
         )}
+        </ListGroup>
       </div>
     )
   };
