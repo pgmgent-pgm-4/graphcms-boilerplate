@@ -33,8 +33,17 @@ const AuthProvider = ({children}) => {
   };
 
   const signOut = async () => {
-    setCurrentUser(null); 
-    return await auth.signOut();
+    try {
+      setCurrentUser(null); 
+      const response = await fetch('/api/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(currentUser)
+      });  
+      const userLoggedOut = await response.json();
+    } catch (error) {
+      console.log(error);
+    } 
   };
 
   return (

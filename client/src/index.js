@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 // React Router v6 imports
 import {
   BrowserRouter,
+  Navigate,
   Routes,
   Route
 } from "react-router-dom";
@@ -25,6 +26,7 @@ ReactDOM.render(
           <Route element={<App />}>
             <Route path="/" element={<PublicLayout />}>
               <Route index element={<HomePage />} />
+              <Route path="home" element={<Navigate to="/" replace={true} />} />
               <Route path="posts" element={<PostsPage />} />  
               <Route path="posts/:postId" element={<PostDetailsPage />} />
               <Route path="communities" element={<CommunitiesPage />} /> 
