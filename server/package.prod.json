@@ -23,7 +23,7 @@
     "build": "npm run clean && npm run build:server",
     "build:server": "cpy package.json dist && babel -d ./dist ./src -s",
     "start:dev": "cross-env NODE_ENV=development HOST=localhost PORT=8080 nodemon --exec babel-node src/app.js --watch src/*",
-    "start:build": "cross-env NODE_ENV=production HOST=localhost PORT=8080 node dist/app.js",
+    "start:build": "cross-env NODE_ENV=production HOST=localhost PORT=80 node dist/app.js",
     "lint": "cross-env NODE_ENV=lint eslint . --ext .js --fix",
     "test": "cross-env NODE_ENV=test HOST=localhost PORT=8081 jest --detectOpenHandles --maxWorkers=1 --forceExit"
   }
