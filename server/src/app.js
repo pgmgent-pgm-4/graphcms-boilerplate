@@ -8,6 +8,9 @@ import cors from 'cors';
 import passportConfig from './config/passport';
 import globalRouter from './routes';
 
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+
 // Read .env settings
 dotenv.config();
 

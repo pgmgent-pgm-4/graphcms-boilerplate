@@ -8,7 +8,6 @@
   "dependencies": {
     "awesome-graphql-client": "^0.11.0",
     "body-parser": "^1.19.1",
-    "core-js": "^3.22.8",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
@@ -17,27 +16,12 @@
     "nunjucks": "^3.2.3",
     "passport": "^0.5.0",
     "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0",
-    "regenerator-runtime": "^0.13.9"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.16.0",
-    "@babel/core": "^7.16.5",
-    "@babel/node": "^7.16.5",
-    "@babel/plugin-transform-runtime": "^7.18.2",
-    "@babel/preset-env": "^7.16.5",
-    "cpy-cli": "^4.1.0",
-    "cross-env": "^7.0.3",
-    "eslint": "^8.4.1",
-    "eslint-config-airbnb": "^19.0.2",
-    "jest": "^27.4.5",
-    "nodemon": "^2.0.15",
-    "supertest": "^6.1.6"
+    "passport-local": "^1.0.0"
   },
   "scripts": {
     "clean": "rm -rf dist && mkdir dist",
     "build": "npm run clean && npm run build:server",
-    "build:server": "cpy package.prod.json dist --rename=package.json && cpy production.env dist && babel -d ./dist ./src -s && cd dist && npm install ",
+    "build:server": "cpy package.json dist && babel -d ./dist ./src -s",
     "start:dev": "cross-env NODE_ENV=development HOST=localhost PORT=8080 nodemon --exec babel-node src/app.js --watch src/*",
     "start:build": "cross-env NODE_ENV=production HOST=localhost PORT=8080 node dist/app.js",
     "lint": "cross-env NODE_ENV=lint eslint . --ext .js --fix",

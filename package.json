@@ -1,0 +1,22 @@
+{
+  "name": "graphcms-boilerplate",
+  "version": "1.0.0",
+  "description": "GraphCMS Boilerplate",
+  "main": "index.js",
+  "scripts": {
+    "build:client": "cd client && npm install && npm run build",
+    "build:server": "cd server && npm run build",
+    "build": "npm run build:client && npm run build:server",
+    "start": "cd server && npm run start:build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pgmgent-pgm-4/graphcms-boilerplate.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pgmgent-pgm-4/graphcms-boilerplate/issues"
+  },
+  "homepage": "https://github.com/pgmgent-pgm-4/graphcms-boilerplate#readme"
+}
